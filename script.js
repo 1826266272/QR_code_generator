@@ -17,7 +17,7 @@ generateBtn.addEventListener("click", () => {
     value = `mailto:${value}`;
   }
 
-  if (value.includes("@") && !value.startsWith("mailto:")) {
+  if (value.includes("@") && !value.includes(".com")) {
     if (!value.startsWith("upi://")) {
       value = `upi://pay?pa=${value}&cu=INR`;
     }

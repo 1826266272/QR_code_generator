@@ -4,21 +4,30 @@ const qrImage = document.getElementById("qrImage");
 const errorMsg = document.getElementById("error");
 
 generateBtn.addEventListener("click", () => {
-  const imageUrl = imageUrlInput.value.trim();
+  let value = imageUrlInput.value.trim();
   errorMsg.textContent = "";
   qrImage.style.display = "none";
 
-  if (!imageUrl) {
-    errorMsg.textContent = "Please enter an image URL";
+  if (!value) {
+    errorMsg.textContent = "Please enter value";
     return;
   }
 
-  if (!imageUrl.startsWith("http")) {
-    errorMsg.textContent = "Please enter a valid URL";
-    return;
+  if (value.includes(".com") && !value.startsWith("upi://")) {
+    value = `mailto:${value}`;
   }
 
-  generateQR(imageUrl);
+  if (value.includes("@") && !value.startsWith("mailto:")) {
+    if (!value.startsWith("upi://")) {
+      value = `upi://pay?pa=${value}&cu=INR`;
+    }
+  }
+
+  if (value.includes(",") && value.split(",").length === 2) {
+    value = `https://maps.google.com/?q=${value}`;
+  }
+
+  generateQR(value);
 });
 
 function generateQR(data) {
@@ -28,5 +37,4 @@ function generateQR(data) {
 
   qrImage.src = qrUrl;
   qrImage.style.display = "block";
-
 }
